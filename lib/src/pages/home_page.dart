@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:app_peliculas/src/widgets/card_swiper.dart';
+import 'package:app_peliculas/src/providers/pelicula_provider.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -20,6 +21,8 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _crearSwiper() {
+    PeliculaProvider provider = PeliculaProvider();
+    provider.getEsternos();
     return CardSwiper(lista: null);
   }
 }
