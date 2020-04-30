@@ -10,14 +10,27 @@ class PeliculaProvider {
   String _language = "es-ES";
 
   Future<List<PeliculaModel>> getEsternos() async {
-    final url = Uri.https(_url, '3/movie/now_playing',
-        {'api_key': _apiKey, 'language': _language});
-    final response = await http.get(url);
+    return _procesarPeticion('now_playing');
+  }
+
+  Future<List<PeliculaModel>> getPopulares() async {
+    return _procesarPeticion('popular');
+  }
+
+  Future<List<PeliculaModel>> _procesarPeticion(String path) async {
+    final uri = Uri.https(
+        _url, '3/movie/$path', {'api_key': _apiKey, 'language': _language});
+
+    final response = await http.get(uri);
+
     final decodeData = json.decode(response.body);
+
     List<PeliculaModel> peliculas = List<PeliculaModel>();
+
     for (var json in decodeData['results']) {
       peliculas.add(PeliculaModel.fromJson(json));
     }
+
     return peliculas;
   }
 }

@@ -67,4 +67,8 @@ class PeliculaModel {
         "release_date":
             "${releaseDate.year.toString().padLeft(4, '0')}-${releaseDate.month.toString().padLeft(2, '0')}-${releaseDate.day.toString().padLeft(2, '0')}",
       };
+
+  getPosterURL() {
+    return 'https://image.tmdb.org/t/p/w500/$posterPath';
+  }
 }
