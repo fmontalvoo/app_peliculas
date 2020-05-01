@@ -1,3 +1,4 @@
+import 'package:app_peliculas/src/search/search_data.dart';
 import 'package:flutter/material.dart';
 import 'package:app_peliculas/src/widgets/card_swiper.dart';
 import 'package:app_peliculas/src/widgets/horizontal_list.dart';
@@ -12,7 +13,11 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Películas'),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.search), onPressed: () {})
+          IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                showSearch(context: context, delegate: SearchData());
+              })
         ],
       ),
       body: Container(

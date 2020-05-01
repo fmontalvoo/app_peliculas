@@ -55,8 +55,8 @@ class PeliculaProvider {
     return _procesarPeticion(uri);
   }
 
-  Future<List<PeliculaModel>> getPopulares() async {
-    if (_cargando) return [];
+  void getPopulares() async {
+    if (_cargando) return;
     _cargando = true;
 
     _popularesPage++;
@@ -72,7 +72,13 @@ class PeliculaProvider {
     getPopularesSink(_populares);
 
     _cargando = false;
-    return respuesta;
+  }
+
+  Future<List<PeliculaModel>> getByName(String query) async {
+    final uri = Uri.https(_url, '3/search/movie',
+        {'api_key': _apiKey, 'language': _language, 'query': query});
+
+    return _procesarPeticion(uri);
   }
 
   Future<List<PeliculaModel>> _procesarPeticion(Uri uri) async {

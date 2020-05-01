@@ -36,6 +36,7 @@ class HorizontalList extends StatelessWidget {
   Widget _tarjeta(BuildContext context, PeliculaModel pelicula) {
     pelicula.uid = '${pelicula.id}p';
     final tarjeta = Container(
+      margin: EdgeInsets.only(right: 15.0),
       child: Column(
         children: <Widget>[
           Hero(
