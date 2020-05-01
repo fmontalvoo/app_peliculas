@@ -1,3 +1,4 @@
+import 'package:app_peliculas/src/pages/pelicula_detalle.dart';
 import 'package:flutter/material.dart';
 import 'package:app_peliculas/src/pages/home_page.dart';
 
@@ -9,7 +10,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       initialRoute: 'home',
-      routes: {'home': (context) => HomePage()},
+      routes: {
+        'home': (context) => HomePage(),
+        'detalle': (context) => PeliculaDetalle()
+      },
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
