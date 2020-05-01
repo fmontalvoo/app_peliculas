@@ -1,10 +1,16 @@
+import 'package:app_peliculas/src/models/actor_model.dart';
 import 'package:flutter/material.dart';
 import 'package:app_peliculas/src/models/pelicula_model.dart';
+import 'package:app_peliculas/src/providers/pelicula_provider.dart';
 
 class PeliculaDetalle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final PeliculaModel pelicula = ModalRoute.of(context).settings.arguments;
+    final Map arguments = ModalRoute.of(context).settings.arguments;
+
+    final PeliculaModel pelicula = arguments['pelicula'];
+    final PeliculaProvider provider = arguments['provider'];
+
     return Scaffold(
       body: Center(
         child: CustomScrollView(
@@ -15,6 +21,7 @@ class PeliculaDetalle extends StatelessWidget {
               SizedBox(height: 20.0),
               _encabezado(context, pelicula),
               _descripcion(pelicula),
+              _casting(pelicula, provider)
             ]))
           ],
         ),
@@ -49,11 +56,14 @@ class PeliculaDetalle extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
         children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20.0),
-            child: Image(
-              image: NetworkImage(pelicula.getPosterURL()),
-              height: 150.0,
+          Hero(
+            tag: pelicula.uid,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20.0),
+              child: Image(
+                image: NetworkImage(pelicula.getPosterURL()),
+                height: 150.0,
+              ),
             ),
           ),
           SizedBox(
@@ -90,6 +100,55 @@ class PeliculaDetalle extends StatelessWidget {
       child: Text(
         pelicula.overview,
         textAlign: TextAlign.justify,
+      ),
+    );
+  }
+
+  Widget _casting(PeliculaModel pelicula, PeliculaProvider provider) {
+    return FutureBuilder(
+        future: provider.getCast(pelicula.id),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) return _castingPageView(snapshot.data);
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        });
+  }
+
+  Widget _castingPageView(List<ActorModel> actores) {
+    return SizedBox(
+      height: 200.0,
+      child: PageView.builder(
+        pageSnapping: false,
+        controller: PageController(viewportFraction: .3, initialPage: 1),
+        itemCount: actores.length,
+        itemBuilder: (context, index) {
+          return _tarjeta(context, actores[index]);
+        },
+      ),
+    );
+  }
+
+  Widget _tarjeta(BuildContext context, ActorModel actor) {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+            child: FadeInImage(
+              image: NetworkImage(actor.getProfilePath()),
+              placeholder: AssetImage('assets/img/no-image.jpg'),
+              fit: BoxFit.cover,
+              height: 150.0,
+            ),
+          ),
+          SizedBox(height: 5.0),
+          Text(
+            actor.name,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.caption,
+          )
+        ],
       ),
     );
   }

@@ -1,6 +1,6 @@
-import 'package:app_peliculas/src/widgets/horizontal_list.dart';
 import 'package:flutter/material.dart';
 import 'package:app_peliculas/src/widgets/card_swiper.dart';
+import 'package:app_peliculas/src/widgets/horizontal_list.dart';
 import 'package:app_peliculas/src/providers/pelicula_provider.dart';
 
 class HomePage extends StatelessWidget {
@@ -28,7 +28,8 @@ class HomePage extends StatelessWidget {
     return FutureBuilder(
         future: provider.getEsternos(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) return CardSwiper(lista: snapshot.data);
+          if (snapshot.hasData)
+            return CardSwiper(lista: snapshot.data, provider: provider);
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -59,7 +60,8 @@ class HomePage extends StatelessWidget {
                 if (snapshot.hasData)
                   return HorizontalList(
                     lista: snapshot.data,
-                    cargarData: provider.getPopulares
+                    cargarData: provider.getPopulares,
+                    provider: provider,
                   );
                 return Center(child: CircularProgressIndicator());
               })

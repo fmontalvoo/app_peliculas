@@ -1,4 +1,4 @@
-class Actor {
+class ActorModel {
   int castId;
   String character;
   String creditId;
@@ -8,7 +8,7 @@ class Actor {
   int order;
   String profilePath;
 
-  Actor({
+  ActorModel({
     this.castId,
     this.character,
     this.creditId,
@@ -19,7 +19,7 @@ class Actor {
     this.profilePath,
   });
 
-  factory Actor.fromJson(Map<String, dynamic> json) => Actor(
+  factory ActorModel.fromJson(Map<String, dynamic> json) => ActorModel(
         castId: json["cast_id"],
         character: json["character"],
         creditId: json["credit_id"],
@@ -42,6 +42,8 @@ class Actor {
       };
 
   getProfilePath() {
-    return 'https://image.tmdb.org/t/p/w500/$profilePath';
+    if (profilePath != null)
+      return 'https://image.tmdb.org/t/p/w500/$profilePath';
+    return 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png';
   }
 }

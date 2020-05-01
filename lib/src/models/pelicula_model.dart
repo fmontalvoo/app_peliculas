@@ -1,6 +1,7 @@
 // https://quicktype.io/
 
 class PeliculaModel {
+  String uid;
   int id;
   double popularity;
   int voteCount;
@@ -69,8 +70,14 @@ class PeliculaModel {
       };
 
   getPosterURL() {
-    return 'https://image.tmdb.org/t/p/w500/$posterPath';
+    if (posterPath != null)
+      return 'https://image.tmdb.org/t/p/w500/$posterPath';
+    return 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png';
   }
 
-  getBackdropPath() => 'https://image.tmdb.org/t/p/w500/$backdropPath';
+  getBackdropPath() {
+    if (posterPath != null)
+      return 'https://image.tmdb.org/t/p/w500/$backdropPath';
+    return 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png';
+  }
 }

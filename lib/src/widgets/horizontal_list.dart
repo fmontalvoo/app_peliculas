@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:app_peliculas/src/models/pelicula_model.dart';
 
+import 'package:app_peliculas/src/providers/pelicula_provider.dart';
+
 class HorizontalList extends StatelessWidget {
   final List<PeliculaModel> lista;
   final Function cargarData;
+  final PeliculaProvider provider;
 
-  const HorizontalList({@required this.lista, this.cargarData});
+  const HorizontalList({@required this.lista, this.cargarData, this.provider});
 
   @override
   Widget build(BuildContext context) {
@@ -31,17 +34,20 @@ class HorizontalList extends StatelessWidget {
   }
 
   Widget _tarjeta(BuildContext context, PeliculaModel pelicula) {
+    pelicula.uid = '${pelicula.id}p';
     final tarjeta = Container(
-      margin: EdgeInsets.only(left: 15.0),
       child: Column(
         children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20.0),
-            child: FadeInImage(
-              image: NetworkImage(pelicula.getPosterURL()),
-              placeholder: AssetImage('assets/img/no-image.jpg'),
-              fit: BoxFit.cover,
-              height: 160,
+          Hero(
+            tag: pelicula.uid,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20.0),
+              child: FadeInImage(
+                image: NetworkImage(pelicula.getPosterURL()),
+                placeholder: AssetImage('assets/img/no-image.jpg'),
+                fit: BoxFit.cover,
+                height: 160,
+              ),
             ),
           ),
           SizedBox(height: 5.0),
@@ -57,7 +63,8 @@ class HorizontalList extends StatelessWidget {
     return GestureDetector(
       child: tarjeta,
       onTap: () {
-        Navigator.pushNamed(context, 'detalle', arguments: pelicula);
+        Navigator.pushNamed(context, 'detalle',
+            arguments: {'pelicula': pelicula, 'provider': provider});
       },
     );
   }
